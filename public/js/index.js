@@ -3,9 +3,14 @@ var socket = io();
 socket.on('connect', function()  {
     console.log('Connected to Server');
 
+    socket.on('welcome', function(welcome) {
+    console.log(welcome);
+    });
 });
 
-socket.on('disconnected', function() {
+
+
+socket.on('disconnect', function() {
     console.log('unable to connect');
 });
 

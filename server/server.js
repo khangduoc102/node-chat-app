@@ -30,8 +30,8 @@ io.on('connection', (socket) => {
 
         io.to(params.room).emit('updateUserList', users.getUserList(params.room));
 
-        socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatapp!'));
-        socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', params.name +' joined!'));
+        socket.emit('statusMessage', generateMessage('Admin', 'Welcome to the chatapp!'));
+        socket.broadcast.to(params.room).emit('statusMessage', generateMessage('Admin', params.name +' joined!'));
         //
 
         //
@@ -49,7 +49,8 @@ io.on('connection', (socket) => {
         var user= users.getUser(socket.id);
 
         if(user && isRealString(newMess.text)){
-            io.to(user.room).emit('newMessage', generateMessage(user.name, newMess.text));
+            socket.emit('newMessageForSender', generateMessage(user.name, newMess.text));
+            socket.broadcast.to(user.room).emit('newMessage', generateMessage(user.name, newMess.text));
          }
             
         callback();
@@ -59,7 +60,8 @@ io.on('connection', (socket) => {
         var user = users.getUser(socket.id);
 
         if(user){
-            io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
+            socket.emit('newLocationMessageForSender', generateLocationMessage(user.name, coords.latitude, coords.longitude));
+            socket.broadcast.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
         }
     });
 
@@ -68,7 +70,8 @@ io.on('connection', (socket) => {
 
         if(user) {
             io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-            io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left the room`));
+           // io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left the room`));
+            socket.broadcast.to(user.room).emit('statusMessage', generateMessage('Admin', `${user.name} has left the room`));
         }
     })
 });

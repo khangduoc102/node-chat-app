@@ -118,7 +118,7 @@ socket.on('newLocationMessage', function(message) {
         createdAt: formattedTime
     });
 
-    var div= jQuery('<div style="text-align: left"></div>');
+    var div= jQuery('<div style="text-align: left" class="col-md-6"></div>');
     div.append(html);
     jQuery('#messages').append(div);
     scrollToBottom();
@@ -141,7 +141,7 @@ socket.on('newLocationMessageForSender', function(message) {
         createdAt: formattedTime
     });
 
-    var div= jQuery('<div style="text-align: right"></div>');
+    var div= jQuery('<div style="text-align: right" class="col-md-6 offset-6"></div>');
     div.append(html);
     jQuery('#messages').append(div);
     scrollToBottom();
